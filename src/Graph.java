@@ -9,7 +9,7 @@ class Graph
     private LinkedList<Integer> adjacencies[]; // Adjacency List
 
     //Constructor
-    Graph(int numberOfVertices)
+    public Graph(int numberOfVertices)
     {
         this.numberOfVertices = numberOfVertices;
         adjacencies = new LinkedList[numberOfVertices];
@@ -18,10 +18,16 @@ class Graph
     }
 
     // Function to add an edge into the graph
-    void addEdge(int vertice, int w) { adjacencies[vertice].add(w); }
+    public void addEdge(int vertex, int target) {
+        if (adjacencies.length > vertex && adjacencies.length > target ) {
+            adjacencies[vertex].add(target);
+        } else {
+            throw new RuntimeException("Either the vertex or the target for creation of a new edge was not found.");
+        }
+    }
 
     // A recursive function used by topologicalSort
-    void topologicalSortUtil(int vertice, boolean visited[],
+    private void topologicalSortUtil(int vertice, boolean visited[],
                              Stack stack)
     {
         // Mark the current node as visited.
