@@ -48,6 +48,11 @@ class Graph
         stack.push(new Integer(vertice));
     }
 
+    public LinkedList<Integer>[] getAdjacencies()
+    {
+        return adjacencies;
+    }
+
     // The function to do Topological Sort. It uses
     // recursive topologicalSortUtil()
     public Stack topologicalSort()

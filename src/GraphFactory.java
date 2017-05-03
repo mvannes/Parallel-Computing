@@ -1,5 +1,7 @@
 import com.sun.javaws.exceptions.InvalidArgumentException;
 
+import java.util.*;
+
 /**
  * Factory for the creation of large Directed Acyclic Graphs (DAG)
  */
@@ -20,15 +22,31 @@ public class GraphFactory {
         if (amountOfVertices > (amountOfEdges + 1) ) {
             throw new RuntimeException("Given amount of edges is too small for the given amount of vertices, can't " +
                     "form a graph without leaving a vertex unlinked.");
+        // Max amount of edges in a DAG is (N-1)(N)/2
+        } else if(amountOfEdges > ((amountOfVertices -1) * amountOfVertices) / 2) {
+            throw new RuntimeException("Given amount of edges is too large for the given amount of vertices." +
+                    "Can't create this graph without creating cycles.");
         }
         Graph graph = new Graph(amountOfVertices);
-        for(int i=0; i<amountOfEdges; i++) {
-            if (i < amountOfVertices - 1) {
-                graph.addEdge(i, i + 1);
-            } else {
-                // Figure something out to add more edges here.
+        int vertices[] = new int[amountOfVertices];
+        int amountOfSetEdges = 0;
+        LinkedList[] adjacency = new LinkedList[amountOfVertices];
+        for (int i=0;i<amountOfVertices;i++) {
+            vertices[i] = i;
+            adjacency[i] = new LinkedList<>();
+        }
+        Collections.shuffle(Arrays.asList(vertices));
+        Random random = new Random();
+        while(amountOfEdges > amountOfSetEdges) {
+            int vertex = random.nextInt(amountOfVertices);
+            int target = random.nextInt(amountOfVertices);
+            if ((vertex < target) && !adjacency[vertex].contains(target)) {
+                adjacency[vertex].add(target);
+                amountOfSetEdges++;
+                graph.addEdge(vertex, target);
             }
         }
+
         return graph;
     }
 }
