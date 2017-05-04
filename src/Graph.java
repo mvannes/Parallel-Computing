@@ -26,23 +26,23 @@ class Graph {
     }
 
     // A recursive function used by topologicalSort
-    private void topologicalSortUtil(int vertice, boolean visited[],
+    private void topologicalSortUtil(int vertex, boolean visited[],
                                      Stack stack) {
         // Mark the current node as visited.
-        visited[vertice] = true;
+        visited[vertex] = true;
         Integer i;
 
         // Recur for all the vertices adjacent to this
         // vertex
-        Iterator<Integer> it = adjacencies[vertice].iterator();
-        while (it.hasNext()) {
-            i = it.next();
+        Iterator<Integer> iterator = adjacencies[vertex].iterator();
+        while (iterator.hasNext()) {
+            i = iterator.next();
             if (!visited[i])
                 topologicalSortUtil(i, visited, stack);
         }
 
         // Push current vertex to stack which stores result
-        stack.push(new Integer(vertice));
+        stack.push(new Integer(vertex));
     }
 
     // The function to do Topological Sort. It uses
@@ -69,11 +69,11 @@ class Graph {
 
     // prints a Topological Sort of the complete graph using Khan's algorithm
     public Stack topologicalSortKhan() {
-        // Create a array to store indegrees of all
-        // vertices. Initialize all indegrees as 0.
+        // Create a array to store in-degrees of all
+        // vertices. Initialize all in-degrees as 0.
         int inDegree[] = new int[numberOfVertices];
 
-        // Traverse adjacency lists to fill indegrees of
+        // Traverse adjacency lists to fill in-degrees of
         // vertices. This step takes O(V+E) time
         for (int i = 0; i < numberOfVertices; i++) {
             for (int node : adjacencies[i]) {
@@ -82,38 +82,38 @@ class Graph {
         }
 
         // Create a queue and enqueue all vertices with
-        // indegree 0
-        Queue<Integer> q = new LinkedList<Integer>();
+        // in-degree 0
+        Queue<Integer> queue = new LinkedList<Integer>();
         for (int i = 0; i < numberOfVertices; i++) {
             if (inDegree[i] == 0)
-                q.add(i);
+                queue.add(i);
         }
 
         // Initialize count of visited vertices
-        int cnt = 0;
+        int visitedVertices = 0;
 
         // Create a stack to store result (A topological
         // ordering of the vertices)
         Stack topOrder = new Stack();
-        while (!q.isEmpty()) {
+        while (!queue.isEmpty()) {
             // Extract front of queue (or perform dequeue)
             // and add it to topological order
-            int u = q.poll();
+            int u = queue.poll();
             topOrder.add(u);
 
             // Iterate through all its neighbouring nodes
-            // of dequeued node u and decrease their in-degree
+            // of de-queued node u and decrease their in-degree
             // by 1
             for (int node : adjacencies[u]) {
                 // If in-degree becomes zero, add it to queue
                 if (--inDegree[node] == 0)
-                    q.add(node);
+                    queue.add(node);
             }
-            cnt++;
+            visitedVertices++;
         }
 
         // Check if there was a cycle
-        if (cnt != numberOfVertices) {
+        if (visitedVertices != numberOfVertices) {
             throw new RuntimeException("A cycle was found in the Graph.");
         }
 
