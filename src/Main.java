@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.Stack;
 
 public class Main {
@@ -7,31 +6,51 @@ public class Main {
     public static void main(String args[])
     {
         GraphFactory factory = new GraphFactory();
-        // Create a graph with nodes.
-        Graph g = factory.createGraph(10000, 20000);
+        // Graph with same edges and vertices, small amount
+        int vertices = 10;
+        int edges    = 10;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        System.out.println("---------------------------------------------");
+
+        // Factor 10 larger than last graph
+        vertices = 100;
+        edges    = 100;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        System.out.println("---------------------------------------------");
+
+        // Factor 10 larger than last graph
+        vertices = 1000;
+        edges    = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        System.out.println("---------------------------------------------");
+
+        // Factor 10 larger than last graph
+        vertices = 10000;
+        edges    = 10000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        System.out.println("---------------------------------------------");
+
+        // Factor 10 larger than last graph
+        vertices = 100000;
+        edges    = 100000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        System.out.println("---------------------------------------------");
+    }
+
+    public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
         System.out.println("Following is a Topological " +
                 "sort of the given graph using Khan's algorithm");
-        // Note: Topological sort using Khan returns a similar stack to depth-first, except that they are turned around.
-        // So khan's "0, 1, 2" becomes "2, 1, 0" when using depth-first.
         long startTime = System.nanoTime();
-        Stack sortedStackKhan  = g.topologicalSortKhan();
+        Stack sortedStackKhan  = graph.topologicalSortKhan();
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
         System.out.println("Khan ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
 
+        System.out.println("Same for Depth-first");
         startTime = System.nanoTime();
-        Stack sortedStackDepth = g.topologicalSort();
+        Stack sortedStackDepth = graph.topologicalSort();
         endTime = System.nanoTime();
         duration = (endTime - startTime);
         System.out.println("Depth-first ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
-        while (!sortedStackKhan.empty()) {
-            System.out.print(sortedStackKhan.pop() + ", ");
-        }
-        // Formatting println.
-        System.out.println();
-        System.out.println("Now using Depth-first:");
-        while (!sortedStackDepth.empty()) {
-            System.out.print(sortedStackDepth.pop() + ", ");
-        }
     }
 }
