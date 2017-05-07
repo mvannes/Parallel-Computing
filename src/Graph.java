@@ -7,6 +7,8 @@ import java.util.*;
 class Graph {
     private int numberOfVertices;   // No. of vertices
     private LinkedList<Integer> adjacencies[]; // Adjacency List
+    private int[] inDegree;
+    private int visitedVertices;
 
     //Constructor
     public Graph(int numberOfVertices) {
@@ -83,7 +85,7 @@ class Graph {
 
         // Create a queue and enqueue all vertices with
         // in-degree 0
-        Queue<Integer> queue = new LinkedList<Integer>();
+        Queue<Integer> queue = new LinkedList();
         for (int i = 0; i < numberOfVertices; i++) {
             if (inDegree[i] == 0)
                 queue.add(i);
@@ -119,4 +121,114 @@ class Graph {
 
         return topOrder;
     }
+
+    // prints a Topological Sort of the complete graph using a parallel implementation of Khan's algorithm
+    public Stack topologicalSortKhanParallel(int amountOfThreads) {
+        // Create a array to store in-degrees of all
+        // vertices. Initialize all in-degrees as 0.
+        inDegree = new int[numberOfVertices];
+        int bound = numberOfVertices / amountOfThreads; // Rely on integer division to floor the result.
+
+        // Create the initialization threads
+        Thread[] initThreads = new Thread[amountOfThreads];
+        for(int i = 0; i < amountOfThreads; i++) {
+            if (i == 0) {
+                initThreads[i] = new Thread(new InitializationRunnable(0, bound));
+            } else if (i == amountOfThreads) {
+                initThreads[i] = new Thread(new InitializationRunnable(i * bound, numberOfVertices));
+            } else{
+                initThreads[i] = new Thread(new InitializationRunnable(i * bound, i + 1 * bound));
+            }
+        }
+
+        for(Thread thread: initThreads) {
+            thread.start();
+        }
+        for(Thread thread: initThreads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        // Initialize count of visited vertices
+        int visitedVertices = 0;
+
+        // Create a queue and enqueue all vertices with
+        // in-degree 0
+        Queue<Integer> queue = new LinkedList();
+        for (int i = 0; i < numberOfVertices; i++) {
+            if (inDegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+
+        // Create a stack to store result (A topological
+        // ordering of the vertices)
+        Stack topOrder = new Stack();
+        while (!queue.isEmpty()) {
+            // Extract front of queue (or perform dequeue)
+            // and add it to topological order
+            int u = queue.poll();
+            topOrder.add(u);
+
+            // Iterate through all its neighbouring nodes
+            // of de-queued node u and decrease their in-degree
+            // by 1
+            for (int node : adjacencies[u]) {
+                // If in-degree becomes zero, add it to queue
+                if (decreaseInDegree(node) == 0) {
+                    queue.add(node);
+                }
+            }
+            visitedVertices++;
+        }
+
+        // Check if there was a cycle
+        if (visitedVertices != numberOfVertices) {
+            throw new RuntimeException("A cycle was found in the Graph.");
+        }
+
+        return topOrder;
+    }
+
+    class InitializationRunnable implements Runnable {
+        private int lowerBound;
+        private int upperBound;
+
+        public InitializationRunnable(int lowerBound, int upperBound) {
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
+        }
+
+        public void run() {
+            for (int i = lowerBound; i  < upperBound; i++) {
+                for (int node: adjacencies[i]) {
+                    increaseInDegree(node);
+                }
+            }
+        }
+
+    }
+
+    private int decreaseInDegree(int nodeToDecrease) {
+        inDegree[nodeToDecrease]--;
+        return inDegree[nodeToDecrease];
+    }
+
+    private synchronized int increaseInDegree(int nodeToIncrease) {
+        inDegree[nodeToIncrease]++;
+        return inDegree[nodeToIncrease];
+    }
+
+    private void increaseVisitedVertices() {
+        visitedVertices++;
+    }
+
+    private int getVisitedVertices() {
+        return visitedVertices;
+    }
+
 }

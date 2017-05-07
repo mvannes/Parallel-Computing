@@ -52,5 +52,12 @@ public class Main {
         endTime = System.nanoTime();
         duration = (endTime - startTime);
         System.out.println("Depth-first ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
+
+        System.out.println("Try parallel:");
+        startTime = System.nanoTime();
+        Stack sortedStackParallel = graph.topologicalSortKhanParallel(4);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        System.out.println("Parallel khan ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
     }
 }
