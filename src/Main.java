@@ -1,7 +1,6 @@
 import java.util.Stack;
 
 public class Main {
-
     // Driver method
     public static void main(String args[])
     {
@@ -10,31 +9,31 @@ public class Main {
         int vertices = 10;
         int edges    = 10;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        System.out.println("---------------------------------------------");
+        printSeperator();
 
         // Factor 10 larger than last graph
         vertices = 100;
         edges    = 100;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        System.out.println("---------------------------------------------");
+        printSeperator();
 
         // Factor 10 larger than last graph
         vertices = 1000;
         edges    = 1000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        System.out.println("---------------------------------------------");
+        printSeperator();
 
         // Factor 10 larger than last graph
         vertices = 10000;
         edges    = 10000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        System.out.println("---------------------------------------------");
+        printSeperator();
 
         // Factor 10 larger than last graph
         vertices = 100000;
         edges    = 100000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        System.out.println("---------------------------------------------");
+        printSeperator();
     }
 
     public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
@@ -60,4 +59,12 @@ public class Main {
         duration = (endTime - startTime);
         System.out.println("Parallel khan ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
     }
+
+    /**
+    * printSeperator prints lines
+    */
+    public static void printSeperator() {
+        System.out.println("---------------------------------------------");
+    }
+
 }
