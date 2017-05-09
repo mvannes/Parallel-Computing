@@ -8,7 +8,7 @@ class Graph {
     private int numberOfVertices;   // No. of vertices
     private LinkedList<Integer> adjacencies[]; // Adjacency List
     private int[] inDegree;
-    private int visitedVertices;
+    private Queue<Integer> queue;
 
     //Constructor
     public Graph(int numberOfVertices) {
@@ -127,23 +127,22 @@ class Graph {
         // Create a array to store in-degrees of all
         // vertices. Initialize all in-degrees as 0.
         inDegree = new int[numberOfVertices];
-        int bound = numberOfVertices / amountOfThreads; // Rely on integer division to floor the result.
+        int bound = numberOfVertices / amountOfThreads;
 
         // Create the initialization threads
-        Thread[] initThreads = new Thread[amountOfThreads];
+        Thread[] initThreads  = new Thread[amountOfThreads];
+        Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfThreads; i++) {
-            if (i == 0) {
-                initThreads[i] = new Thread(new InitializationRunnable(0, bound));
-            } else if (i == amountOfThreads) {
-                initThreads[i] = new Thread(new InitializationRunnable(i * bound, numberOfVertices));
-            } else{
-                initThreads[i] = new Thread(new InitializationRunnable(i * bound, i + 1 * bound));
+            if (i == (amountOfThreads - 1)) {
+                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, numberOfVertices));
+                queueThreads[i] = new Thread(new QueueingRunnable(bound * i, numberOfVertices));
+            } else {
+                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, bound * (i + 1)));
+                queueThreads[i] = new Thread(new QueueingRunnable(bound * i, bound * (i + 1)));
             }
+            initThreads[i].start(); // Consider if this is better in a separate loop. Depends on how threads start.
         }
 
-        for(Thread thread: initThreads) {
-            thread.start();
-        }
         for(Thread thread: initThreads) {
             try {
                 thread.join();
@@ -158,10 +157,16 @@ class Graph {
 
         // Create a queue and enqueue all vertices with
         // in-degree 0
-        Queue<Integer> queue = new LinkedList();
-        for (int i = 0; i < numberOfVertices; i++) {
-            if (inDegree[i] == 0) {
-                queue.add(i);
+        queue = new LinkedList();
+
+        for(Thread thread: queueThreads) {
+            thread.start();
+        }
+        for(Thread thread: queueThreads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
@@ -210,7 +215,24 @@ class Graph {
                 }
             }
         }
+    }
 
+    class QueueingRunnable implements Runnable {
+        private int lowerBound;
+        private int upperBound;
+
+        public QueueingRunnable(int lowerBound, int upperBound) {
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
+        }
+
+        public void run() {
+            for (int i = lowerBound; i  < upperBound; i++) {
+                if (getCurrentInDegree(i) == 0) {
+                    addToQueue(i);
+                }
+            }
+        }
     }
 
     private int decreaseInDegree(int nodeToDecrease) {
@@ -223,12 +245,11 @@ class Graph {
         return inDegree[nodeToIncrease];
     }
 
-    private void increaseVisitedVertices() {
-        visitedVertices++;
+    private int getCurrentInDegree(int node) {
+        return inDegree[node];
     }
 
-    private int getVisitedVertices() {
-        return visitedVertices;
+    private synchronized void addToQueue(int node) {
+        queue.add(node);
     }
-
 }
