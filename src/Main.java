@@ -30,34 +30,65 @@ public class Main {
         printSeperator();
 
         // Factor 10 larger than last graph
-        vertices = 100000;
-        edges    = 100000;
+        vertices = 1000000;
+        edges    = 1000000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        // Factor 10 larger than last graph
+        vertices = 10000000;
+        edges    = 10000000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
     }
 
     public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
-        System.out.println("Following is a Topological " +
-                "sort of the given graph using Khan's algorithm");
-        long startTime = System.nanoTime();
-        Stack sortedStackKhan  = graph.topologicalSortKhan();
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-        System.out.println("Khan ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
+        int timesToRun = 5;
+        System.out.println(
+                "Testing with a graph made up of " +
+                amountOfVertices +
+                " vertices and " +
+                amountOfEdges +
+                " edges"
+        );
+        System.out.println("Running test " + timesToRun + " times");
+        long totalTimeKhan     = 0;
+        long totalTimeDepth    = 0;
+        long totalTimeParallel = 0;
+        long startTime = 0;
+        long endTime = 0;
+        for (int i = 0; i < timesToRun; i++) {
+            // Khan's algorithm
+            startTime = System.nanoTime();
+            Stack sortedStackKhan  = graph.topologicalSortKhan();
+            endTime = System.nanoTime();
+            totalTimeKhan += (endTime - startTime);
 
-        System.out.println("Same for Depth-first");
-        startTime = System.nanoTime();
-        Stack sortedStackDepth = graph.topologicalSort();
-        endTime = System.nanoTime();
-        duration = (endTime - startTime);
-        System.out.println("Depth-first ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
+            // Depth-first
+            startTime = System.nanoTime();
+            Stack sortedStackDepth = graph.topologicalSort();
+            endTime = System.nanoTime();
+            totalTimeDepth = (endTime - startTime);
 
-        System.out.println("Try parallel:");
-        startTime = System.nanoTime();
-        Stack sortedStackParallel = graph.topologicalSortKhanParallel(4);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime);
-        System.out.println("Parallel khan ran in: " + duration + " nanoseconds or " + duration / 1000000 + " ms");
+            // Parallel
+            startTime = System.nanoTime();
+            Stack sortedStackParallel = graph.topologicalSortKhanParallel(4);
+            endTime = System.nanoTime();
+            totalTimeParallel = (endTime - startTime);
+        }
+        System.out.println(
+            "average for khan: " + (totalTimeKhan / timesToRun) +
+            " nanoseconds or in ms: " + (totalTimeKhan / timesToRun) / 1000000
+        );
+        System.out.println(
+            "average for depth: " + (totalTimeDepth / timesToRun) +
+            " nanoseconds or in ms: " + (totalTimeDepth / timesToRun) / 1000000
+        );
+        System.out.println(
+            "average for parallel: " + (totalTimeParallel / timesToRun) +
+            " nanoseconds or in ms: " + (totalTimeParallel / timesToRun) / 1000000
+        );
+
     }
 
     /**

@@ -23,7 +23,7 @@ public class GraphFactory {
             throw new RuntimeException("Given amount of edges is too small for the given amount of vertices, can't " +
                     "form a graph without leaving a vertex unlinked.");
         // Max amount of edges in a DAG is (N-1)(N)/2
-        } else if(amountOfEdges > ((amountOfVertices -1) * amountOfVertices) / 2) {
+        } else if((long)amountOfEdges > ((long)(amountOfVertices -1) * (long)amountOfVertices) / 2) {
             throw new RuntimeException("Given amount of edges is too large for the given amount of vertices." +
                     "Can't create this graph without creating cycles.");
         }
