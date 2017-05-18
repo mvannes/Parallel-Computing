@@ -36,70 +36,70 @@ public class Main {
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
 
-        System.out.println("Increase in edges with set amount of vertices = 1000000");
-
-        vertices = 1000000;
-        edges    = 1250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 1500000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 1750000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2000000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2500000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-
-        System.out.println("Increase in vertices with set amount of edges = 2250000");
-
-        vertices = 1000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1250000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1500000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1750000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 2000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 2250000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
+//        System.out.println("Increase in edges with set amount of vertices = 1000000");
+//
+//        vertices = 1000000;
+//        edges    = 1250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 1500000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 1750000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 2000000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 2500000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//
+//        System.out.println("Increase in vertices with set amount of edges = 2250000");
+//
+//        vertices = 1000000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1250000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1500000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1750000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 2000000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 2250000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
     }
 
     public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
@@ -132,7 +132,7 @@ public class Main {
 
             // Parallel
             startTime = System.nanoTime();
-            Stack sortedStackParallel = graph.topologicalSortKhanParallel(2);
+            Stack sortedStackParallel = graph.topologicalSortKhanParallel(4);
             endTime = System.nanoTime();
             totalTimeParallel = (endTime - startTime);
         }

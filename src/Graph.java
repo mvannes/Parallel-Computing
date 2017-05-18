@@ -134,10 +134,10 @@ class Graph {
         Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfThreads; i++) {
             if (i == (amountOfThreads - 1)) {
-                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, numberOfVertices));
+                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, numberOfVertices, numberOfVertices));
                 queueThreads[i] = new Thread(new QueueingRunnable(bound * i, numberOfVertices));
             } else {
-                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, bound * (i + 1)));
+                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, bound * (i + 1), numberOfVertices));
                 queueThreads[i] = new Thread(new QueueingRunnable(bound * i, bound * (i + 1)));
             }
             initThreads[i].start(); // Consider if this is better in a separate loop. Depends on how threads start.
@@ -202,19 +202,24 @@ class Graph {
     class InitializationRunnable implements Runnable {
         private int lowerBound;
         private int upperBound;
+        private int[] inDegree;
 
-        public InitializationRunnable(int lowerBound, int upperBound) {
+        public InitializationRunnable(int lowerBound, int upperBound, int numberOfVertices) {
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
+            this.inDegree   = new int[numberOfVertices];
         }
 
         public void run() {
             for (int i = lowerBound; i  < upperBound; i++) {
                 for (int node: adjacencies[i]) {
-                    increaseInDegree(node);
+                    this.inDegree[node]++;
                 }
             }
+
+            increaseInDegrees(this.inDegree);
         }
+
     }
 
     class QueueingRunnable implements Runnable {
@@ -240,9 +245,10 @@ class Graph {
         return inDegree[nodeToDecrease];
     }
 
-    private synchronized int increaseInDegree(int nodeToIncrease) {
-        inDegree[nodeToIncrease]++;
-        return inDegree[nodeToIncrease];
+    private synchronized void increaseInDegrees(int[] inDegrees) {
+        for (int i =0; i < inDegrees.length; i++) {
+            inDegree[i] += inDegrees[i];
+        }
     }
 
     private int getCurrentInDegree(int node) {
