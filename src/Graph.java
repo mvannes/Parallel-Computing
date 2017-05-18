@@ -1,13 +1,14 @@
 // A Java program to print topological sorting of a DAG
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 // This class represents a directed graph using adjacency
 // list representation
 class Graph {
     private int numberOfVertices;   // No. of vertices
     private LinkedList<Integer> adjacencies[]; // Adjacency List
-    private int[] inDegree;
+    private AtomicIntegerArray inDegree;
     private Queue<Integer> queue;
 
     //Constructor
@@ -126,7 +127,7 @@ class Graph {
     public Stack topologicalSortKhanParallel(int amountOfThreads) {
         // Create a array to store in-degrees of all
         // vertices. Initialize all in-degrees as 0.
-        inDegree = new int[numberOfVertices];
+        inDegree = new AtomicIntegerArray(numberOfVertices);
         int bound = numberOfVertices / amountOfThreads;
 
         // Create the initialization threads
@@ -134,10 +135,10 @@ class Graph {
         Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfThreads; i++) {
             if (i == (amountOfThreads - 1)) {
-                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, numberOfVertices, numberOfVertices));
+                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, numberOfVertices));
                 queueThreads[i] = new Thread(new QueueingRunnable(bound * i, numberOfVertices));
             } else {
-                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, bound * (i + 1), numberOfVertices));
+                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, bound * (i + 1)));
                 queueThreads[i] = new Thread(new QueueingRunnable(bound * i, bound * (i + 1)));
             }
             initThreads[i].start(); // Consider if this is better in a separate loop. Depends on how threads start.
@@ -202,22 +203,18 @@ class Graph {
     class InitializationRunnable implements Runnable {
         private int lowerBound;
         private int upperBound;
-        private int[] inDegree;
 
-        public InitializationRunnable(int lowerBound, int upperBound, int numberOfVertices) {
+        public InitializationRunnable(int lowerBound, int upperBound) {
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
-            this.inDegree   = new int[numberOfVertices];
         }
 
         public void run() {
             for (int i = lowerBound; i  < upperBound; i++) {
                 for (int node: adjacencies[i]) {
-                    this.inDegree[node]++;
+                    increaseInDegrees(node);
                 }
             }
-
-            increaseInDegrees(this.inDegree);
         }
 
     }
@@ -241,18 +238,16 @@ class Graph {
     }
 
     private int decreaseInDegree(int nodeToDecrease) {
-        inDegree[nodeToDecrease]--;
-        return inDegree[nodeToDecrease];
+
+        return inDegree.decrementAndGet(nodeToDecrease);
     }
 
-    private synchronized void increaseInDegrees(int[] inDegrees) {
-        for (int i =0; i < inDegrees.length; i++) {
-            inDegree[i] += inDegrees[i];
-        }
+    private void increaseInDegrees(int node) {
+        inDegree.incrementAndGet(node);
     }
 
     private int getCurrentInDegree(int node) {
-        return inDegree[node];
+        return inDegree.get(node);
     }
 
     private synchronized void addToQueue(int node) {
