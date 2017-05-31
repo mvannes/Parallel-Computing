@@ -132,7 +132,7 @@ public class Main {
 
             // Parallel
             startTime = System.nanoTime();
-            Stack sortedStackParallel = graph.topologicalSortKhanParallel(2);
+            Stack sortedStackParallel = graph.topologicalSortKhanParallel(1, 1);
             endTime = System.nanoTime();
             totalTimeParallel = (endTime - startTime);
         }
