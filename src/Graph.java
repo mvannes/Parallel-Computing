@@ -1,6 +1,7 @@
 // A Java program to print topological sorting of a DAG
 
 import java.util.*;
+import java.util.concurrent.*;
 
 // This class represents a directed graph using adjacency
 // list representation
@@ -9,6 +10,8 @@ class Graph {
     private LinkedList<Integer> adjacencies[]; // Adjacency List
     private int[] inDegree;
     private Queue<Integer> queue;
+    private BlockingQueue<Integer> nodesToIndegree;
+    private int count;
 
     //Constructor
     public Graph(int numberOfVertices) {
@@ -123,32 +126,45 @@ class Graph {
     }
 
     // prints a Topological Sort of the complete graph using a parallel implementation of Khan's algorithm
-    public Stack topologicalSortKhanParallel(int amountOfThreads) {
+    public Stack topologicalSortKhanParallel(int amountOfProducers, int amountOfConsumers) {
         // Create a array to store in-degrees of all
         // vertices. Initialize all in-degrees as 0.
         inDegree = new int[numberOfVertices];
-        int bound = numberOfVertices / amountOfThreads;
-
+        int amountOfThreads = amountOfConsumers + amountOfConsumers;
+        int boundProducers  = numberOfVertices / amountOfThreads;
+        int bound           = numberOfVertices / amountOfThreads;
+        nodesToIndegree = new LinkedBlockingQueue();
+        ExecutorService executorService = Executors.newCachedThreadPool();
         // Create the initialization threads
         Thread[] initThreads  = new Thread[amountOfThreads];
         Thread[] queueThreads = new Thread[amountOfThreads];
-        for(int i = 0; i < amountOfThreads; i++) {
-            if (i == (amountOfThreads - 1)) {
-                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, numberOfVertices));
-                queueThreads[i] = new Thread(new QueueingRunnable(bound * i, numberOfVertices));
+        for(int i = 0; i < amountOfProducers; i++) {
+            if (i == (amountOfProducers - 1)) {
+                initThreads[i]  = new Thread(new InitializationProducer(boundProducers * i, numberOfVertices));
             } else {
-                initThreads[i]  = new Thread(new InitializationRunnable(bound * i, bound * (i + 1)));
-                queueThreads[i] = new Thread(new QueueingRunnable(bound * i, bound * (i + 1)));
+                initThreads[i]  = new Thread(new InitializationProducer(boundProducers * i, boundProducers * (i + 1)));
             }
-            initThreads[i].start(); // Consider if this is better in a separate loop. Depends on how threads start.
+            executorService.submit(initThreads[i]);
         }
 
-        for(Thread thread: initThreads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        for (int i = 0; i < amountOfThreads; i++) {
+            if (i == (amountOfThreads - 1)) {
+                queueThreads[i] = new Thread(new QueueingRunnable(bound * i, numberOfVertices));
+            } else {
+                queueThreads[i] = new Thread(new QueueingRunnable(bound * i, bound * (i + 1)));
             }
+        }
+
+        for (int i = 0; i < amountOfConsumers; i++) {
+            executorService.submit(new InitializationConsumer());
+        }
+
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(1, TimeUnit.DAYS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
@@ -199,11 +215,11 @@ class Graph {
         return topOrder;
     }
 
-    class InitializationRunnable implements Runnable {
+    class InitializationProducer implements Runnable {
         private int lowerBound;
         private int upperBound;
 
-        public InitializationRunnable(int lowerBound, int upperBound) {
+        public InitializationProducer(int lowerBound, int upperBound) {
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
         }
@@ -211,8 +227,25 @@ class Graph {
         public void run() {
             for (int i = lowerBound; i  < upperBound; i++) {
                 for (int node: adjacencies[i]) {
-                    increaseInDegree(node);
+                    nodesToIndegree.add(node);
                 }
+            }
+        }
+    }
+
+    class InitializationConsumer implements Runnable {
+        int node;
+
+        public void run() {
+            while (count != numberOfVertices) {
+                try {
+                    node = nodesToIndegree.take();
+                    increaseInDegree(node);
+                    upCount();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
@@ -251,5 +284,9 @@ class Graph {
 
     private synchronized void addToQueue(int node) {
         queue.add(node);
+    }
+
+    private synchronized void upCount() {
+        count++;
     }
 }
