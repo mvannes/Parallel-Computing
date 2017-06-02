@@ -103,7 +103,7 @@ public class Main {
     }
 
     public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
-        int timesToRun = 10;
+        int timesToRun = 1;
         System.out.println(
                 "Testing with a graph made up of " +
                 amountOfVertices +

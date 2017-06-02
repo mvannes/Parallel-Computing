@@ -262,7 +262,7 @@ class Graph {
         public void run() {
             for (int i = lowerBound; i  < upperBound; i++) {
                 if (getCurrentInDegree(i) == 0) {
-                    addToQueue(i); // check out use of concurrenthashmap / batch
+                    addToQueue(i);
                 }
             }
         }
