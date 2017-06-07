@@ -3,6 +3,8 @@
 import java.util.*;
 import java.util.concurrent.*;
 
+import javax.jms.JMSException;
+
 // This class represents a directed graph using adjacency
 // list representation
 class Graph {
@@ -126,7 +128,7 @@ class Graph {
     }
 
     // prints a Topological Sort of the complete graph using a parallel implementation of Khan's algorithm
-    public Stack topologicalSortKhanParallel(int amountOfProducers, int amountOfConsumers) {
+    public Stack topologicalSortKhanParallel(int amountOfProducers, int amountOfConsumers) throws JMSException {
         // Create a array to store in-degrees of all
         // vertices. Initialize all in-degrees as 0.
         inDegree = new int[numberOfVertices];
@@ -140,9 +142,9 @@ class Graph {
         Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfProducers; i++) {
             if (i == (amountOfProducers - 1)) {
-                initThreads[i]  = new Thread(new InitializationProducer(boundProducers * i, numberOfVertices));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "0",adjacencies));
             } else {
-                initThreads[i]  = new Thread(new InitializationProducer(boundProducers * i, boundProducers * (i + 1)));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "", adjacencies));
             }
             executorService.submit(initThreads[i]);
         }

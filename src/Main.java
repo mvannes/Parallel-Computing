@@ -1,9 +1,10 @@
 import java.util.Stack;
 
+import javax.jms.JMSException;
+
 public class Main {
     // Driver method
-    public static void main(String args[])
-    {
+    public static void main(String args[]) throws JMSException {
         GraphFactory factory = new GraphFactory();
         System.out.println("Linear increase in both vertices and edges, scaling x10 every time");
         // Graph with same edges and vertices, small amount
@@ -102,7 +103,7 @@ public class Main {
         printSeperator();
     }
 
-    public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
+    public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) throws JMSException {
         int timesToRun = 10;
         System.out.println(
                 "Testing with a graph made up of " +
