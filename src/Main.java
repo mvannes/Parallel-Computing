@@ -114,7 +114,12 @@ public class Main {
         System.out.println("Running test " + timesToRun + " times");
         long totalTimeKhan     = 0;
         long totalTimeDepth    = 0;
-        long totalTimeParallel = 0;
+        long totalTimeParallel2 = 0;
+        long totalTimeAtomic2   = 0;
+        long totalTimeBatched2  = 0;
+        long totalTimeParallel4 = 0;
+        long totalTimeAtomic4   = 0;
+        long totalTimeBatched4  = 0;
         long startTime         = 0;
         long endTime           = 0;
         for (int i = 0; i < timesToRun; i++) {
@@ -128,13 +133,45 @@ public class Main {
             startTime = System.nanoTime();
             Stack sortedStackDepth = graph.topologicalSort();
             endTime = System.nanoTime();
-            totalTimeDepth = (endTime - startTime);
+            totalTimeDepth += (endTime - startTime);
 
             // Parallel
             startTime = System.nanoTime();
             Stack sortedStackParallel = graph.topologicalSortKhanParallel(2);
             endTime = System.nanoTime();
-            totalTimeParallel = (endTime - startTime);
+            totalTimeParallel2 += (endTime - startTime);
+
+            // Parallel Atomic
+            startTime = System.nanoTime();
+            Stack sortedStackParallelAtomic = graph.topologicalSortKhanParallelAtomic(2);
+            endTime = System.nanoTime();
+            totalTimeAtomic2 += (endTime - startTime);
+
+
+            // Parallel Atomic
+            startTime = System.nanoTime();
+            Stack sortedStackParallelBatched = graph.topologicalSortKhanParallelAtomic(2);
+            endTime = System.nanoTime();
+            totalTimeBatched2 += (endTime - startTime);
+
+            // Parallel
+            startTime = System.nanoTime();
+            Stack sortedStackParallel4 = graph.topologicalSortKhanParallel(4);
+            endTime = System.nanoTime();
+            totalTimeParallel4 += (endTime - startTime);
+
+            // Parallel Atomic
+            startTime = System.nanoTime();
+            Stack sortedStackParallelAtomic4 = graph.topologicalSortKhanParallelAtomic(4);
+            endTime = System.nanoTime();
+            totalTimeAtomic4 += (endTime - startTime);
+
+
+            // Parallel Atomic
+            startTime = System.nanoTime();
+            Stack sortedStackParallelBatched4 = graph.topologicalSortKhanParallelAtomic(4);
+            endTime = System.nanoTime();
+            totalTimeBatched4 += (endTime - startTime);
         }
         System.out.println(
             "average for khan: " + (totalTimeKhan / timesToRun) +
@@ -145,8 +182,29 @@ public class Main {
             " nanoseconds or in ms: " + (totalTimeDepth / timesToRun) / 1000000
         );
         System.out.println(
-            "average for parallel: " + (totalTimeParallel / timesToRun) +
-            " nanoseconds or in ms: " + (totalTimeParallel / timesToRun) / 1000000
+                "average for parallel 2 core: " + (totalTimeParallel2 / timesToRun) +
+                        " nanoseconds or in ms: " + (totalTimeParallel2 / timesToRun) / 1000000
+        );
+        System.out.println(
+                "average for atomic parallel 2 core: " + (totalTimeAtomic2 / timesToRun) +
+                        " nanoseconds or in ms: " + (totalTimeAtomic2 / timesToRun) / 1000000
+        );
+        System.out.println(
+                "average for batched parallel 2 core: " + (totalTimeBatched2 / timesToRun) +
+                        " nanoseconds or in ms: " + (totalTimeBatched2 / timesToRun) / 1000000
+        );
+
+        System.out.println(
+                "average for parallel 4 core: " + (totalTimeParallel4 / timesToRun) +
+                        " nanoseconds or in ms: " + (totalTimeParallel4 / timesToRun) / 1000000
+        );
+        System.out.println(
+                "average for atomic parallel 4 core: " + (totalTimeAtomic4 / timesToRun) +
+                        " nanoseconds or in ms: " + (totalTimeAtomic4 / timesToRun) / 1000000
+        );
+        System.out.println(
+                "average for batched parallel 4 core: " + (totalTimeBatched4 / timesToRun) +
+                        " nanoseconds or in ms: " + (totalTimeBatched4 / timesToRun) / 1000000
         );
 
     }
