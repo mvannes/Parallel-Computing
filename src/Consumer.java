@@ -9,6 +9,7 @@ public class Consumer {
     private static String subjectFrom = "queue";
     //adress to send it off to
 
+    public Session session;
     public static void main(String args[]) throws Exception {
 
 
@@ -42,19 +43,7 @@ class InitializationConsumer implements Runnable {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Destination destination_fromQueue = session.createQueue("queue");
             MessageConsumer consumer = session.createConsumer(destination_fromQueue);
-            consumer.setMessageListener(new Listener());
-//            while (count != numberOfVertices) {
-//                try {
-//                    // take node from queue acrtivemq
-//                    node = consumer.
-//                            node =
-//                                    increaseInDegree(node);
-//                    count++;
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
+            consumer.setMessageListener(new Listener(session));
 
         } catch (JMSException e) {
             e.printStackTrace();
@@ -65,6 +54,11 @@ class InitializationConsumer implements Runnable {
 }
 
 class Listener implements MessageListener {
+
+    Session session;
+    public Listener(Session session){
+        this.session = session;
+    }
     @Override
     public void onMessage(Message message) {
         // do shit
@@ -72,6 +66,13 @@ class Listener implements MessageListener {
         try {
             String str = textMessage.getText();
             int node = Integer.parseInt(str);
+            Destination destination_toQueue = session.createQueue("mainQueue");
+            MessageProducer producer = session.createProducer(destination_toQueue);
+
+            producer.send(textMessage);
+            System.out.println("send :D");
+            //something add indegrees
+            //
 
         } catch (JMSException e) {
             e.printStackTrace();

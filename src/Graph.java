@@ -132,19 +132,19 @@ class Graph {
         // Create a array to store in-degrees of all
         // vertices. Initialize all in-degrees as 0.
         inDegree = new int[numberOfVertices];
-        int amountOfThreads = amountOfConsumers + amountOfConsumers;
+        int amountOfThreads = amountOfConsumers + amountOfProducers;
         int boundProducers  = numberOfVertices / amountOfThreads;
         int bound           = numberOfVertices / amountOfThreads;
         nodesToIndegree = new LinkedBlockingQueue();
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newFixedThreadPool(amountOfProducers);
         // Create the initialization threads
         Thread[] initThreads  = new Thread[amountOfThreads];
         Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfProducers; i++) {
             if (i == (amountOfProducers - 1)) {
-                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "0",adjacencies));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "127.0.0.1:61616",adjacencies,i));
             } else {
-                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "", adjacencies));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "127.0.0.1:61616", adjacencies,i));
             }
             executorService.submit(initThreads[i]);
         }
@@ -157,17 +157,17 @@ class Graph {
             }
         }
 
-        for (int i = 0; i < amountOfConsumers; i++) {
-            executorService.submit(new InitializationConsumer());
-        }
+
 
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(1, TimeUnit.DAYS);
+            executorService.awaitTermination(1000, TimeUnit.DAYS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // start message listener for consumers, when you have amountofvertecies messages, end listening, start rest of sorting
 
 
         // Initialize count of visited vertices

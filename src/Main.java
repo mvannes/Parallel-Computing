@@ -12,99 +12,10 @@ public class Main {
         int edges    = 10;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 100;
-        edges    = 100;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 1000;
-        edges    = 1000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 10000;
-        edges    = 10000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 1000000;
-        edges    = 1000000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        System.out.println("Increase in edges with set amount of vertices = 1000000");
-
-        vertices = 1000000;
-        edges    = 1250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 1500000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 1750000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2000000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2500000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-
-        System.out.println("Increase in vertices with set amount of edges = 2250000");
-
-        vertices = 1000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1250000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1500000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1750000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 2000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 2250000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
     }
 
     public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) throws JMSException {
-        int timesToRun = 10;
+        int timesToRun = 1;
         System.out.println(
                 "Testing with a graph made up of " +
                 amountOfVertices +
@@ -133,7 +44,7 @@ public class Main {
 
             // Parallel
             startTime = System.nanoTime();
-            Stack sortedStackParallel = graph.topologicalSortKhanParallel(1, 1);
+            Stack sortedStackParallel = graph.topologicalSortKhanParallel(3, 1);
             endTime = System.nanoTime();
             totalTimeParallel = (endTime - startTime);
         }
