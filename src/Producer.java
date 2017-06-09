@@ -22,13 +22,12 @@ public class Producer implements Runnable {
 
 
 
-	public Producer(int lowerBound, int upperBound, String ipAdres, LinkedList<Integer> adjacencies[], int i) throws JMSException {
+	public Producer(int lowerBound, int upperBound, String ipAdres, LinkedList<Integer> adjacencies[]) throws JMSException {
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 		this.adjacencies = adjacencies;
 		destination = "queue";
 		this.ipAdres = ipAdres;
-		System.out.print(i);
 
 		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://" + this.ipAdres);
 		Connection connection = connectionFactory.createConnection();
@@ -43,9 +42,9 @@ public class Producer implements Runnable {
 
 	@Override
 	public void run() {
+		int count = 0;
 		for (int i = lowerBound; i  < upperBound; i++) {
 			for (Integer node: adjacencies[i]) {
-
 				TextMessage message;
 				try {
 					message = session.createTextMessage(node.toString());
@@ -54,9 +53,9 @@ public class Producer implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			Thread.currentThread().interrupt();
-			return;
 		}
+		Thread.currentThread().interrupt();
+		return;
 	}
 }
 

@@ -8,8 +8,8 @@ public class Main {
         GraphFactory factory = new GraphFactory();
         System.out.println("Linear increase in both vertices and edges, scaling x10 every time");
         // Graph with same edges and vertices, small amount
-        int vertices = 10;
-        int edges    = 10;
+        int vertices = 1000;
+        int edges    = 10000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
     }

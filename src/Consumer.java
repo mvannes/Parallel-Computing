@@ -14,12 +14,25 @@ public class Consumer {
 
 
         int numberOfConsumers = Integer.parseInt(args[0]);
-        int numberOfVerticies = Integer.parseInt(args[1]);
 
-        Thread thread = new Thread(new InitializationConsumer(10));
+        Thread[] consumerThreads = new Thread[numberOfConsumers];
 
-        thread.start();
-        thread.join();
+        for (int i = 0; i < numberOfConsumers; i++) {
+            if (i == (numberOfConsumers - 1)) {
+                consumerThreads[i] = new Thread(new InitializationConsumer(10));
+            } else {
+                consumerThreads[i] = new Thread(new InitializationConsumer(10));
+            }
+            consumerThreads[i].start();
+        }
+
+        for(Thread thread: consumerThreads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 
 
@@ -42,6 +55,7 @@ class InitializationConsumer implements Runnable {
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Destination destination_fromQueue = session.createQueue("queue");
+
             MessageConsumer consumer = session.createConsumer(destination_fromQueue);
             consumer.setMessageListener(new Listener(session));
 
@@ -71,8 +85,6 @@ class Listener implements MessageListener {
 
             producer.send(textMessage);
             System.out.println("send :D");
-            //something add indegrees
-            //
 
         } catch (JMSException e) {
             e.printStackTrace();

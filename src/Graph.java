@@ -1,9 +1,12 @@
 // A Java program to print topological sorting of a DAG
 
 import java.util.*;
+import java.util.Queue;
 import java.util.concurrent.*;
 
-import javax.jms.JMSException;
+import javax.jms.*;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 // This class represents a directed graph using adjacency
 // list representation
@@ -142,9 +145,9 @@ class Graph {
         Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfProducers; i++) {
             if (i == (amountOfProducers - 1)) {
-                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "127.0.0.1:61616",adjacencies,i));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "127.0.0.1:61616",adjacencies));
             } else {
-                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "127.0.0.1:61616", adjacencies,i));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "127.0.0.1:61616", adjacencies));
             }
             executorService.submit(initThreads[i]);
         }
@@ -170,6 +173,35 @@ class Graph {
         // start message listener for consumers, when you have amountofvertecies messages, end listening, start rest of sorting
 
 
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616");
+        Connection connection = connectionFactory.createConnection();
+        connection.start();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        //
+
+        Thread[] consumerThreads = new Thread[amountOfConsumers];
+
+        for (int i = 0; i < amountOfConsumers; i++) {
+                consumerThreads[i] = new Thread(new ReceiverThread(session));
+                consumerThreads[i].start();
+        }
+
+        for(Thread thread: consumerThreads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        while(nodesToIndegree.size() != numberOfVertices){
+
+
+
+        }
+
+
         // Initialize count of visited vertices
         int visitedVertices = 0;
 
@@ -191,6 +223,8 @@ class Graph {
         // Create a stack to store result (A topological
         // ordering of the vertices)
         Stack topOrder = new Stack();
+        long start = System.currentTimeMillis();
+
         while (!queue.isEmpty()) {
             // Extract front of queue (or perform dequeue)
             // and add it to topological order
@@ -213,6 +247,10 @@ class Graph {
         if (visitedVertices != numberOfVertices) {
             throw new RuntimeException("A cycle was found in the Graph.");
         }
+
+        long end = System.currentTimeMillis();
+
+        System.out.println(end - start);
 
         return topOrder;
     }
@@ -270,6 +308,25 @@ class Graph {
         }
     }
 
+    class ReceiverThread implements Runnable{
+        Session session;
+        public ReceiverThread(Session session){
+            this.session = session;
+        }
+
+        @Override
+        public void run() {
+            Destination destination_fromQueue = null;
+            try {
+                destination_fromQueue = session.createQueue("mainQueue");
+                MessageConsumer consumer = session.createConsumer(destination_fromQueue);
+                consumer.setMessageListener(new ReceiverOfMessages(session,numberOfVertices));
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private int decreaseInDegree(int nodeToDecrease) {
         inDegree[nodeToDecrease]--;
         return inDegree[nodeToDecrease];
@@ -284,6 +341,10 @@ class Graph {
         return inDegree[node];
     }
 
+    private synchronized  void addToNodesToIndegreeQueue(int node){
+        nodesToIndegree.add(node);
+    }
+
     private synchronized void addToQueue(int node) {
         queue.add(node);
     }
@@ -291,4 +352,39 @@ class Graph {
     private synchronized void upCount() {
         count++;
     }
+
+
+    class ReceiverOfMessages implements MessageListener {
+
+        Session session;
+        int node;
+        int count;
+        int amountOfNodesToIndegree;
+
+        public ReceiverOfMessages(Session session, int amountOfNodesToIndegree){
+            this.session = session;
+            this.amountOfNodesToIndegree = amountOfNodesToIndegree;
+            count = 0;
+        }
+        @Override
+        public void onMessage(Message message) {
+            // do shit
+            TextMessage textMessage = (TextMessage) message;
+            try {
+                node = Integer.parseInt(textMessage.getText());
+
+                if(count != amountOfNodesToIndegree){
+                    count++;
+                    addToNodesToIndegreeQueue(node);
+                } else {
+                    session.close();
+                }
+
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
+
