@@ -7,103 +7,103 @@ public class Main {
         GraphFactory factory = new GraphFactory();
         System.out.println("Linear increase in both vertices and edges, scaling x10 every time");
         // Graph with same edges and vertices, small amount
-        int vertices = 10;
-        int edges    = 10;
+        int vertices = 1000;
+        int edges    = 499500;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
 
-        // Factor 10 larger than last graph
-        vertices = 100;
-        edges    = 100;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 1000;
-        edges    = 1000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 10000;
-        edges    = 10000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        // Factor 10 larger than last graph
-        vertices = 1000000;
-        edges    = 1000000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        System.out.println("Increase in edges with set amount of vertices = 1000000");
-
-        vertices = 1000000;
-        edges    = 1250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 1500000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 1750000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2000000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1000000;
-        edges    = 2500000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-
-        System.out.println("Increase in vertices with set amount of edges = 2250000");
-
-        vertices = 1000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1250000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1500000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 1750000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 2000000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
-        vertices = 2250000;
-        edges    = 2250000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
+//        // Factor 10 larger than last graph
+//        vertices = 100;
+//        edges    = 100;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        // Factor 10 larger than last graph
+//        vertices = 1000;
+//        edges    = 1000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        // Factor 10 larger than last graph
+//        vertices = 10000;
+//        edges    = 10000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        // Factor 10 larger than last graph
+//        vertices = 1000000;
+//        edges    = 1000000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        System.out.println("Increase in edges with set amount of vertices = 1000000");
+//
+//        vertices = 1000000;
+//        edges    = 1250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 1500000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 1750000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 2000000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1000000;
+//        edges    = 2500000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//
+//        System.out.println("Increase in vertices with set amount of edges = 2250000");
+//
+//        vertices = 1000000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1250000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1500000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 1750000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 2000000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
+//
+//        vertices = 2250000;
+//        edges    = 2250000;
+//        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+//        printSeperator();
     }
 
     public static void testPrintAndTime(Graph graph, int amountOfVertices, int amountOfEdges) {
-        int timesToRun = 10;
+        int timesToRun = 1;
         System.out.println(
                 "Testing with a graph made up of " +
                 amountOfVertices +
@@ -130,48 +130,48 @@ public class Main {
             totalTimeKhan += (endTime - startTime);
 
             // Depth-first
-            startTime = System.nanoTime();
-            Stack sortedStackDepth = graph.topologicalSort();
-            endTime = System.nanoTime();
-            totalTimeDepth += (endTime - startTime);
-
-            // Parallel
-            startTime = System.nanoTime();
-            Stack sortedStackParallel = graph.topologicalSortKhanParallel(2);
-            endTime = System.nanoTime();
-            totalTimeParallel2 += (endTime - startTime);
-
-            // Parallel Atomic
-            startTime = System.nanoTime();
-            Stack sortedStackParallelAtomic = graph.topologicalSortKhanParallelAtomic(2);
-            endTime = System.nanoTime();
-            totalTimeAtomic2 += (endTime - startTime);
-
-
-            // Parallel Atomic
-            startTime = System.nanoTime();
-            Stack sortedStackParallelBatched = graph.topologicalSortKhanParallelAtomic(2);
-            endTime = System.nanoTime();
-            totalTimeBatched2 += (endTime - startTime);
-
-            // Parallel
-            startTime = System.nanoTime();
-            Stack sortedStackParallel4 = graph.topologicalSortKhanParallel(4);
-            endTime = System.nanoTime();
-            totalTimeParallel4 += (endTime - startTime);
-
-            // Parallel Atomic
-            startTime = System.nanoTime();
-            Stack sortedStackParallelAtomic4 = graph.topologicalSortKhanParallelAtomic(4);
-            endTime = System.nanoTime();
-            totalTimeAtomic4 += (endTime - startTime);
-
-
-            // Parallel Atomic
-            startTime = System.nanoTime();
-            Stack sortedStackParallelBatched4 = graph.topologicalSortKhanParallelAtomic(4);
-            endTime = System.nanoTime();
-            totalTimeBatched4 += (endTime - startTime);
+//            startTime = System.nanoTime();
+//            Stack sortedStackDepth = graph.topologicalSort();
+//            endTime = System.nanoTime();
+//            totalTimeDepth += (endTime - startTime);
+//
+//            // Parallel
+//            startTime = System.nanoTime();
+//            Stack sortedStackParallel = graph.topologicalSortKhanParallel(2);
+//            endTime = System.nanoTime();
+//            totalTimeParallel2 += (endTime - startTime);
+//
+//            // Parallel Atomic
+//            startTime = System.nanoTime();
+//            Stack sortedStackParallelAtomic = graph.topologicalSortKhanParallelAtomic(2);
+//            endTime = System.nanoTime();
+//            totalTimeAtomic2 += (endTime - startTime);
+//
+//
+//            // Parallel Atomic
+//            startTime = System.nanoTime();
+//            Stack sortedStackParallelBatched = graph.topologicalSortKhanParallelAtomic(2);
+//            endTime = System.nanoTime();
+//            totalTimeBatched2 += (endTime - startTime);
+//
+//            // Parallel
+//            startTime = System.nanoTime();
+//            Stack sortedStackParallel4 = graph.topologicalSortKhanParallel(4);
+//            endTime = System.nanoTime();
+//            totalTimeParallel4 += (endTime - startTime);
+//
+//            // Parallel Atomic
+//            startTime = System.nanoTime();
+//            Stack sortedStackParallelAtomic4 = graph.topologicalSortKhanParallelAtomic(4);
+//            endTime = System.nanoTime();
+//            totalTimeAtomic4 += (endTime - startTime);
+//
+//
+//            // Parallel Atomic
+//            startTime = System.nanoTime();
+//            Stack sortedStackParallelBatched4 = graph.topologicalSortKhanParallelAtomic(4);
+//            endTime = System.nanoTime();
+//            totalTimeBatched4 += (endTime - startTime);
         }
         System.out.println(
             "average for khan: " + (totalTimeKhan / timesToRun) +

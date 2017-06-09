@@ -73,6 +73,7 @@ class Graph {
 
     // prints a Topological Sort of the complete graph using Khan's algorithm
     public Stack topologicalSortKhan() {
+        long timeStartInit = System.nanoTime();
         // Create a array to store in-degrees of all
         // vertices. Initialize all in-degrees as 0.
         int inDegree[] = new int[numberOfVertices];
@@ -92,7 +93,11 @@ class Graph {
             if (inDegree[i] == 0)
                 queue.add(i);
         }
+        long timeEndInit = System.nanoTime();
 
+        System.out.println("init took: " + (timeEndInit - timeStartInit));
+
+        long timeStartSort = System.nanoTime();
         // Initialize count of visited vertices
         int visitedVertices = 0;
 
@@ -120,6 +125,8 @@ class Graph {
         if (visitedVertices != numberOfVertices) {
             throw new RuntimeException("A cycle was found in the Graph.");
         }
+        long timeEndSort = System.nanoTime();
+        System.out.println("sort took: " + (timeEndSort - timeStartSort));
 
         return topOrder;
     }
