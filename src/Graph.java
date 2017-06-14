@@ -145,9 +145,9 @@ class Graph {
         Thread[] queueThreads = new Thread[amountOfThreads];
         for(int i = 0; i < amountOfProducers; i++) {
             if (i == (amountOfProducers - 1)) {
-                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "127.0.0.1:61616",adjacencies));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, numberOfVertices, "169.254.1.1:61616",adjacencies));
             } else {
-                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "127.0.0.1:61616", adjacencies));
+                initThreads[i]  = new Thread(new Producer(boundProducers * i, boundProducers * (i + 1), "169.254.1.1:61616", adjacencies));
             }
             executorService.submit(initThreads[i]);
         }
@@ -173,7 +173,7 @@ class Graph {
         // start message listener for consumers, when you have amountofvertecies messages, end listening, start rest of sorting
 
 
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616");
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://169.254.1.1:61616");
         Connection connection = connectionFactory.createConnection();
         connection.start();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

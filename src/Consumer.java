@@ -4,7 +4,7 @@ import javax.jms.*;
 
 
 public class Consumer {
-    private static String url = "tcp://127.0.0.1:61616";
+    private static String url = "tcp://169.254.1.1:61616";
     // from producer
     private static String subjectFrom = "queue";
     //adress to send it off to
@@ -50,7 +50,7 @@ class InitializationConsumer implements Runnable {
     public void run() {
 
         try {
-            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616");
+            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://169.254.1.1:61616");
             Connection connection = connectionFactory.createConnection();
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

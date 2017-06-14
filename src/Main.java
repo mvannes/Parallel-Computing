@@ -8,8 +8,59 @@ public class Main {
         GraphFactory factory = new GraphFactory();
         System.out.println("Linear increase in both vertices and edges, scaling x10 every time");
         // Graph with same edges and vertices, small amount
-        int vertices = 1000;
-        int edges    = 10000;
+        int vertices = 10;
+        int edges    = 10;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 100;
+        edges = 100;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+
+        vertices = 500;
+        edges = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 1000;
+        edges = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 10;
+        edges = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 100;
+        edges = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 500;
+        edges = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 900;
+        edges = 1000;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 10;
+        edges = 40;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 100;
+        edges = 4050;
+        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
+        printSeperator();
+
+        vertices = 1000;
+        edges = 405000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
     }
@@ -31,20 +82,20 @@ public class Main {
         long endTime           = 0;
         for (int i = 0; i < timesToRun; i++) {
             // Khan's algorithm
-            startTime = System.nanoTime();
-            Stack sortedStackKhan  = graph.topologicalSortKhan();
-            endTime = System.nanoTime();
-            totalTimeKhan += (endTime - startTime);
-
-            // Depth-first
-            startTime = System.nanoTime();
-            Stack sortedStackDepth = graph.topologicalSort();
-            endTime = System.nanoTime();
-            totalTimeDepth = (endTime - startTime);
+//            startTime = System.nanoTime();
+//            Stack sortedStackKhan  = graph.topologicalSortKhan();
+//            endTime = System.nanoTime();
+//            totalTimeKhan += (endTime - startTime);
+//
+//            // Depth-first
+//            startTime = System.nanoTime();
+//            Stack sortedStackDepth = graph.topologicalSort();
+//            endTime = System.nanoTime();
+//            totalTimeDepth = (endTime - startTime);
 
             // Parallel
             startTime = System.nanoTime();
-            Stack sortedStackParallel = graph.topologicalSortKhanParallel(3, 1);
+            Stack sortedStackParallel = graph.topologicalSortKhanParallel(4, 4);
             endTime = System.nanoTime();
             totalTimeParallel = (endTime - startTime);
         }
