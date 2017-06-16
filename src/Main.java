@@ -29,11 +29,6 @@ public class Main {
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
 
-        vertices = 10;
-        edges = 1000;
-        testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
-        printSeperator();
-
         vertices = 100;
         edges = 1000;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
@@ -50,17 +45,17 @@ public class Main {
         printSeperator();
 
         vertices = 10;
-        edges = 40;
+        edges = 30;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
 
         vertices = 100;
-        edges = 4050;
+        edges = 4455;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
 
         vertices = 1000;
-        edges = 405000;
+        edges = 449550;
         testPrintAndTime(factory.createGraph(vertices, edges), vertices, edges);
         printSeperator();
     }
@@ -82,10 +77,10 @@ public class Main {
         long endTime           = 0;
         for (int i = 0; i < timesToRun; i++) {
             // Khan's algorithm
-//            startTime = System.nanoTime();
-//            Stack sortedStackKhan  = graph.topologicalSortKhan();
-//            endTime = System.nanoTime();
-//            totalTimeKhan += (endTime - startTime);
+            startTime = System.nanoTime();
+            Stack sortedStackKhan  = graph.topologicalSortKhan();
+            endTime = System.nanoTime();
+            totalTimeKhan += (endTime - startTime);
 //
 //            // Depth-first
 //            startTime = System.nanoTime();
@@ -103,10 +98,10 @@ public class Main {
             "average for khan: " + (totalTimeKhan / timesToRun) +
             " nanoseconds or in ms: " + (totalTimeKhan / timesToRun) / 1000000
         );
-        System.out.println(
-            "average for depth: " + (totalTimeDepth / timesToRun) +
-            " nanoseconds or in ms: " + (totalTimeDepth / timesToRun) / 1000000
-        );
+//        System.out.println(
+//            "average for depth: " + (totalTimeDepth / timesToRun) +
+//            " nanoseconds or in ms: " + (totalTimeDepth / timesToRun) / 1000000
+//        );
         System.out.println(
             "average for parallel: " + (totalTimeParallel / timesToRun) +
             " nanoseconds or in ms: " + (totalTimeParallel / timesToRun) / 1000000

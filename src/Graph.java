@@ -194,14 +194,6 @@ class Graph {
             }
         }
 
-
-        while(nodesToIndegree.size() != numberOfVertices){
-
-
-
-        }
-
-
         // Initialize count of visited vertices
         int visitedVertices = 0;
 
@@ -248,46 +240,7 @@ class Graph {
             throw new RuntimeException("A cycle was found in the Graph.");
         }
 
-        long end = System.currentTimeMillis();
-
-        System.out.println(end - start);
-
         return topOrder;
-    }
-
-    class InitializationProducer implements Runnable {
-        private int lowerBound;
-        private int upperBound;
-
-        public InitializationProducer(int lowerBound, int upperBound) {
-            this.lowerBound = lowerBound;
-            this.upperBound = upperBound;
-        }
-
-        public void run() {
-            for (int i = lowerBound; i  < upperBound; i++) {
-                for (int node: adjacencies[i]) {
-                    nodesToIndegree.add(node);
-                }
-            }
-        }
-    }
-
-    class InitializationConsumer implements Runnable {
-        int node;
-
-        public void run() {
-            while (count != numberOfVertices) {
-                try {
-                    node = nodesToIndegree.take();
-                    increaseInDegree(node);
-                    upCount();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
     }
 
     class QueueingRunnable implements Runnable {
@@ -372,13 +325,8 @@ class Graph {
             TextMessage textMessage = (TextMessage) message;
             try {
                 node = Integer.parseInt(textMessage.getText());
+                addToNodesToIndegreeQueue(node);
 
-                if(count != amountOfNodesToIndegree){
-                    count++;
-                    addToNodesToIndegreeQueue(node);
-                } else {
-                    session.close();
-                }
 
             } catch (JMSException e) {
                 e.printStackTrace();
